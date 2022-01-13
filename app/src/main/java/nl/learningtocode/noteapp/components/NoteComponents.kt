@@ -46,6 +46,7 @@ fun NoteInputText(
     )
 }
 
+@ExperimentalComposeUiApi
 @Composable
 fun NoteButton(
     modifier : Modifier = Modifier,

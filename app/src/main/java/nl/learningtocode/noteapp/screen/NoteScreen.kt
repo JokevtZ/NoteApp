@@ -1,28 +1,40 @@
 package nl.learningtocode.noteapp.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.type.DateTime
 import nl.learningtocode.noteapp.NoteButton
 import nl.learningtocode.noteapp.NoteInputText
 import nl.learningtocode.noteapp.R
+import nl.learningtocode.noteapp.data.NoteDataSource
+import nl.learningtocode.noteapp.model.Note
+import java.time.format.DateTimeFormatter
 
 @ExperimentalComposeUiApi
 @Composable
-fun NoteScreen(modifier : Modifier = Modifier){
+fun NoteScreen(
+    notes : List<Note>,
+    onAddNote: (Note) -> Unit,
+    onRemoveNote: (Note) -> Unit
+
+){
 
     var title by remember {
         mutableStateOf("")
@@ -32,7 +44,7 @@ fun NoteScreen(modifier : Modifier = Modifier){
         mutableStateOf("")
     }
 
-    Column(modifier = modifier
+    Column(modifier = Modifier
         .padding(6.dp))
     {
         TopAppBar(title =
@@ -47,12 +59,12 @@ fun NoteScreen(modifier : Modifier = Modifier){
         )
 
         // Content
-        Column(modifier = modifier
+        Column(modifier = Modifier
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally)
         {
         NoteInputText(
-            modifier = modifier
+            modifier = Modifier
                 .padding(
                     top = 9.dp,
                     bottom = 8.dp
@@ -66,7 +78,7 @@ fun NoteScreen(modifier : Modifier = Modifier){
             })
 
             NoteInputText(
-                modifier = modifier
+                modifier = Modifier
                     .padding(
                         top = 9.dp,
                         bottom = 8.dp
@@ -80,16 +92,57 @@ fun NoteScreen(modifier : Modifier = Modifier){
                 })
 
             NoteButton(text = "Save Note",
-                onClick = {})
+                onClick = {
+                    if (title.isNotEmpty() && description.isNotEmpty()){
+                //Save or Add text to list
+                    title = ""
+                    description = ""
+
+                }
+                })
+        }
+        Divider(modifier = Modifier
+            .padding(10.dp))
+        LazyColumn {
+            items(notes) { note ->
+                NoteRow(note = note, onNoteClicked =  {})
+            }
         }
     }
-
-
 }
+
+@Composable
+fun NoteRow(
+    modifier: Modifier = Modifier,
+    note : Note,
+    onNoteClicked : (Note) -> Unit) {
+        Surface(
+            modifier
+                .padding(4.dp)
+                .clip(RoundedCornerShape(topEnd = 33.dp, bottomStart = 33.dp))
+                .fillMaxWidth(),
+            color = Color(0xFF917EF0),
+            elevation = 6.dp
+        ) {
+            Column(
+                modifier
+                    .clickable { }
+                    .padding(horizontal = 14.dp, vertical = 6.dp),
+            horizontalAlignment = Alignment.Start) {
+                Text(text = note.title,
+                    style = MaterialTheme.typography.subtitle2)
+                Text(text = note.description,
+                    style = MaterialTheme.typography.subtitle2)
+                Text(text = note.entryDate.format(DateTimeFormatter.ofPattern("EEE,d MMMM yyyy")),
+                    style = MaterialTheme.typography.caption)
+            }
+        }
+}
+
 
 @ExperimentalComposeUiApi
 @Preview(showBackground = true )
 @Composable
 fun NoteScreenPreview(){
-    NoteScreen()
+    NoteScreen(notes = NoteDataSource().loadNotes(), onAddNote = {}, onRemoveNote = {})
 }

@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.tooling.preview.Preview
+import nl.learningtocode.noteapp.data.NoteDataSource
 import nl.learningtocode.noteapp.screen.NoteScreen
 import nl.learningtocode.noteapp.ui.theme.NoteAppTheme
 
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
             NoteAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    NoteScreen()
+                    NoteScreen(notes = NoteDataSource().loadNotes(), onAddNote = {}, onRemoveNote = {})
                 }
             }
         }
