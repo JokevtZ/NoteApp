@@ -3,25 +3,35 @@ package nl.learningtocode.noteapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.tooling.preview.Preview
-import nl.learningtocode.noteapp.data.NoteDataSource
+import androidx.compose.ui.graphics.Color
+import nl.learningtocode.noteapp.model.Note
 import nl.learningtocode.noteapp.screen.NoteScreen
 import nl.learningtocode.noteapp.ui.theme.NoteAppTheme
 
+@ExperimentalComposeUiApi
 class MainActivity : ComponentActivity() {
-    @ExperimentalComposeUiApi
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             NoteAppTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    NoteScreen(notes = NoteDataSource().loadNotes(), onAddNote = {}, onRemoveNote = {})
+                Surface(color = Color.Black) {
+                    val notes = remember {
+                        mutableStateListOf<Note>()
+                    }
+                    NoteScreen(
+                        notes = notes,
+                        onAddNote = {
+                            notes.add(it)
+                        },
+                        onRemoveNote = {
+                            notes.remove(it)
+                        })
                 }
             }
         }
