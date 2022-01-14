@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -34,8 +35,8 @@ class MainActivity : ComponentActivity() {
 
 @ExperimentalComposeUiApi
 @Composable
-fun NotesApp(noteViewModel: NoteViewModel = viewModel()){
-    val notesList = noteViewModel.getAllNotes()
+fun NotesApp(noteViewModel: NoteViewModel){
+    val notesList = noteViewModel.noteList.collectAsState().value
 
     NoteScreen(
         notes = notesList,
@@ -43,6 +44,6 @@ fun NotesApp(noteViewModel: NoteViewModel = viewModel()){
             noteViewModel.addNote(it)
         },
         onRemoveNote = {
-            noteViewModel.removeNote(it)
+            noteViewModel.deleteNote(it)
         })
 }

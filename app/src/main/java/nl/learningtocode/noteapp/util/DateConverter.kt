@@ -1,0 +1,17 @@
+package nl.learningtocode.noteapp.util
+
+import androidx.room.TypeConverter
+import java.util.*
+
+class DateConverter {
+
+    @TypeConverter
+    fun timeStampFromDate(date: Date): Long {
+        return date.time
+    }
+
+    @TypeConverter
+    fun dataTimeStamp(timeStamp: Long): Date {
+        return Date(timeStamp)
+    }
+}
