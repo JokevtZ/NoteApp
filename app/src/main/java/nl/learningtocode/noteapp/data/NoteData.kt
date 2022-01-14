@@ -8,7 +8,7 @@ class NoteDataSource{
 
     fun loadNotes(): List <Note>{
         return listOf(
-            Note(UUID.randomUUID(),"TestInput ","firstTestInput", LocalDateTime.now()),
+            Note(UUID.randomUUID(),"TestInput ","firstTestInput"),
             Note(UUID.randomUUID(),"SecondInput", "HowtoSetThisTime")
 
         )
