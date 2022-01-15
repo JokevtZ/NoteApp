@@ -28,6 +28,7 @@ import nl.learningtocode.noteapp.NoteInputText
 import nl.learningtocode.noteapp.R
 import nl.learningtocode.noteapp.data.NoteDataSource
 import nl.learningtocode.noteapp.model.Note
+import nl.learningtocode.noteapp.util.formatDate
 import java.time.format.DateTimeFormatter
 
 @ExperimentalComposeUiApi
@@ -142,8 +143,8 @@ fun NoteRow(
                     style = MaterialTheme.typography.subtitle2)
                 Text(text = note.description,
                     style = MaterialTheme.typography.subtitle2)
-//                Text(text = note.entryDate.format(DateTimeFormatter.ofPattern("EEE,d MMMM yyyy")),
-//                    style = MaterialTheme.typography.caption)
+                Text(text = formatDate(note.entryDate.time),
+                    style = MaterialTheme.typography.caption)
             }
         }
 }
